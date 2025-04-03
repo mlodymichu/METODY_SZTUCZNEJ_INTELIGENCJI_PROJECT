@@ -1,5 +1,7 @@
 from datetime import datetime
-from os import remove
+from itertools import count
+
+import matplotlib.pyplot as plt
 
 import pandas as pd
 import numpy as np
@@ -26,4 +28,20 @@ data_set.loc[data_set['Device Model'] == 'OnePlus 9', "Release price ($)"] = 729
 np.savetxt("mobile_phone_data_set_added_data.csv", data_set,delimiter=",", fmt="%s")
 
 #print(data_set.dtypes)
-print(data_set['Release price ($)'].describe(include=[np.number]))
+#print(data_set['Release price ($)'].describe(include=[np.number]))
+#print(data_set)
+
+#print(data_set.groupby('Device Model')['Gender'].count())
+
+to_plot_gender_device_model = data_set.groupby('Gender')['Device Model'].value_counts()
+print(to_plot_gender_device_model)
+
+fig, axs = plt.subplots(1,2)
+axs[1]= data_set[data_set["Gender"]=='Female'].groupby('Gender')['Device Model'].value_counts().plot.bar()
+axs[0]= data_set[data_set["Gender"]=='Male'].groupby('Gender')['Device Model'].value_counts().plot.bar()
+plt.show()
+
+# check_size= data_set[data_set["Gender"]=='Female'].groupby('Gender')['Device Model'].value_counts()
+# fig, axs = plt.subplots(1,2)
+# axs[0] = plt.bar(data_set[data_set["Gender"]=='Female'].groupby('Gender')['Device Model'].value_counts(),range(check_size.size))
+# plt.show()
